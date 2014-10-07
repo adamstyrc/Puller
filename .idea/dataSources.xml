@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="2830797998">
+    <data-source source="LOCAL" name="SQLite -" uuid="59995d38-1f97-48e1-90c0-08e536371d9f">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/../../helloAndroid.db</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+
