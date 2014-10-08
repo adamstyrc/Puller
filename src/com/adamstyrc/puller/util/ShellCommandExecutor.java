@@ -15,6 +15,11 @@ public class ShellCommandExecutor {
         executeCommand(command);
     }
 
+    public void adbShellRm(String filePath) {
+        String command = "adb shell rm -r " + filePath;
+        executeCommand(command);
+    }
+
     public String executeCommand(String command) {
 
         StringBuffer output = new StringBuffer();

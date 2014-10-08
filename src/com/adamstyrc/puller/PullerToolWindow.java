@@ -19,6 +19,8 @@ import java.io.File;
 public class PullerToolWindow {
 
     public static final String TOOL_WINDOW_ID = "Puller";
+    public static final String ANDROID_DATA_CACHE_PATH = "/sdcard/pullerCache/";
+
     private static final ImageIcon pomodoroIcon = new ImageIcon(PullerToolWindow.class.getResource("/resources/pomodoro-icon.png"));
 
     private final ShellCommandExecutor mCommandExecutor = new ShellCommandExecutor();
@@ -63,16 +65,19 @@ public class PullerToolWindow {
         Content content = contentFactory.createContent(pullerForm.getRootPanel(), "settings", false);
         myToolWindow.getContentManager().addContent(content);
 
-        pullerForm.getSourceText().setText("/sdcard/helloAndroid.db");
         pullerForm.getDestinationText().setText("/Users/adamstyrc/Desktop/");
 
-        pullerForm.getButton().addActionListener(new ActionListener() {
+        pullerForm.getPullDataButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JTextField sourceText = pullerForm.getSourceText();
-                JTextField destinationText = pullerForm.getDestinationText();
-                mCommandExecutor.adbShellBroadcast();
-                mCommandExecutor.adbPull(sourceText.getText(), destinationText.getText());
+                String dstPath = pullerForm.getDestinationText().getText();
+                if (isProperDestinationDirPath(dstPath)) {
+                    mCommandExecutor.adbShellBroadcast();
+                    mCommandExecutor.adbPull(ANDROID_DATA_CACHE_PATH, dstPath);
+                    if (true) {
+                        mCommandExecutor.adbShellRm(ANDROID_DATA_CACHE_PATH);
+                    }
+                }
 
 
             }
@@ -82,10 +87,16 @@ public class PullerToolWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new java.io.File("."));
                 fileChooser.setDialogTitle("Choose directory to store data");
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.setAcceptAllFileFilterUsed(false);
+                String currentDirPath = pullerForm.getDestinationText().getText();
+                if (isProperDestinationDirPath(currentDirPath)) {
+                    File currentDir = new File(currentDirPath);
+                    fileChooser.setCurrentDirectory(currentDir);
+                }
+//                fileChooser.setCurrentDirectory(new java.io.File("."));
+//                fileChooser.set
 
                 int returnValue = fileChooser.showOpenDialog(pullerForm.getRootPanel());
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -101,6 +112,11 @@ public class PullerToolWindow {
         if (toolWindowManager.getToolWindow(TOOL_WINDOW_ID) != null) {
             toolWindowManager.unregisterToolWindow(TOOL_WINDOW_ID);
         }
+    }
+
+    private boolean isProperDestinationDirPath(String dirPath) {
+        File currentDir = new File(dirPath);
+        return currentDir.isDirectory();
     }
 
 }
