@@ -9,6 +9,12 @@ public class ShellCommandExecutor {
         String command = "adb pull " + srcFilePath + " " + dstFilePath;
         executeCommand(command);
     }
+
+    public void adbShellBroadcast() {
+        String command = "adb shell am broadcast -a pl.adamstyrc.puller.intent.DEBUG --es sms_body \"test from adb\"";
+        executeCommand(command);
+    }
+
     public String executeCommand(String command) {
 
         StringBuffer output = new StringBuffer();

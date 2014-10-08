@@ -14,8 +14,7 @@ import com.intellij.ui.content.ContentFactory;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.File;
 
 public class PullerToolWindow {
 
@@ -64,7 +63,7 @@ public class PullerToolWindow {
         Content content = contentFactory.createContent(pullerForm.getRootPanel(), "settings", false);
         myToolWindow.getContentManager().addContent(content);
 
-        pullerForm.getSourceText().setText("/sdcard/");
+        pullerForm.getSourceText().setText("/sdcard/helloAndroid.db");
         pullerForm.getDestinationText().setText("/Users/adamstyrc/Desktop/");
 
         pullerForm.getButton().addActionListener(new ActionListener() {
@@ -72,8 +71,27 @@ public class PullerToolWindow {
             public void actionPerformed(ActionEvent e) {
                 JTextField sourceText = pullerForm.getSourceText();
                 JTextField destinationText = pullerForm.getDestinationText();
+                mCommandExecutor.adbShellBroadcast();
                 mCommandExecutor.adbPull(sourceText.getText(), destinationText.getText());
 
+
+            }
+        });
+
+        pullerForm.getDestinationPathButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new java.io.File("."));
+                fileChooser.setDialogTitle("Choose directory to store data");
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setAcceptAllFileFilterUsed(false);
+
+                int returnValue = fileChooser.showOpenDialog(pullerForm.getRootPanel());
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    pullerForm.getDestinationText().setText(selectedFile.getAbsolutePath());
+                }
             }
         });
     }
