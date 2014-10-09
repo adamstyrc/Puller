@@ -1,13 +1,16 @@
 <idea-plugin version="2">
-  <id>com.yourcompany.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>com.adamstyrc.puller</id>
+  <name>Puller</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="as@browselabs.com" url="http://www.browselabs.com">Adam Styrc</vendor>
 
-  <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
-    ]]></description>
+  <description>
+      <![CDATA[
+      Plugins enables you for download your Android applications internal data files instantly.
+      </br>
+      Especially useful when you need to get view database from your Android app
+    ]]>
+</description>
 
   <change-notes><![CDATA[
       Add change notes here.<br>
