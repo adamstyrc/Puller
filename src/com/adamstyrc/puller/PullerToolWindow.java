@@ -1,7 +1,9 @@
 package com.adamstyrc.puller;
 
 import com.adamstyrc.puller.ui.PullerForm;
-import com.adamstyrc.puller.util.ShellCommandExecutor;
+import com.adamstyrc.puller.util.AdbCommandExecutor;
+import com.adamstyrc.puller.util.AppDataDownloader;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerListener;
@@ -12,6 +14,8 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -19,11 +23,10 @@ import java.io.File;
 public class PullerToolWindow {
 
     public static final String TOOL_WINDOW_ID = "Puller";
-    public static final String ANDROID_DATA_CACHE_PATH = "/sdcard/pullerCache/";
 
     private static final ImageIcon pomodoroIcon = new ImageIcon(PullerToolWindow.class.getResource("/resources/pomodoro-icon.png"));
 
-    private final ShellCommandExecutor mCommandExecutor = new ShellCommandExecutor();
+    private final AdbCommandExecutor mCommandExecutor = new AdbCommandExecutor();
 
     public PullerToolWindow() {
         ProjectManager.getInstance().addProjectManagerListener(new ProjectManagerListener() {
@@ -65,6 +68,23 @@ public class PullerToolWindow {
         Content content = contentFactory.createContent(pullerForm.getRootPanel(), "settings", false);
         myToolWindow.getContentManager().addContent(content);
 
+        final JTextField destinationText = pullerForm.getDestinationText();
+        destinationText.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateSettings(destinationText);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateSettings(destinationText);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateSettings(destinationText);
+            }
+        });
         pullerForm.getDestinationText().setText("/Users/adamstyrc/Desktop/");
 
         pullerForm.getPullDataButton().addActionListener(new ActionListener() {
@@ -72,14 +92,9 @@ public class PullerToolWindow {
             public void actionPerformed(ActionEvent e) {
                 String dstPath = pullerForm.getDestinationText().getText();
                 if (isProperDestinationDirPath(dstPath)) {
-                    mCommandExecutor.adbShellBroadcast();
-                    mCommandExecutor.adbPull(ANDROID_DATA_CACHE_PATH, dstPath);
-                    if (true) {
-                        mCommandExecutor.adbShellRm(ANDROID_DATA_CACHE_PATH);
-                    }
+                    AppDataDownloader downloader = new AppDataDownloader();
+                    downloader.download();
                 }
-
-
             }
         });
 
@@ -105,6 +120,11 @@ public class PullerToolWindow {
                 }
             }
         });
+    }
+
+    private void updateSettings(JTextField destinationText) {
+        String text = destinationText.getText();
+        PullerSettings.getInstance().setDestinationDirPath(text);
     }
 
     public void unregisterWindowFrom(Project project) {

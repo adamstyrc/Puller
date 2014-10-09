@@ -3,25 +3,24 @@ package com.adamstyrc.puller.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class ShellCommandExecutor {
+public class AdbCommandExecutor {
 
-    public void adbPull(String srcFilePath, String dstFilePath) {
+    public void pullData(String srcFilePath, String dstFilePath) {
         String command = "adb pull " + srcFilePath + " " + dstFilePath;
         executeCommand(command);
     }
 
-    public void adbShellBroadcast() {
+    public void createCacheDir() {
         String command = "adb shell am broadcast -a pl.adamstyrc.puller.intent.DEBUG --es sms_body \"test from adb\"";
         executeCommand(command);
     }
 
-    public void adbShellRm(String filePath) {
+    public void removeCacheDir(String filePath) {
         String command = "adb shell rm -r " + filePath;
         executeCommand(command);
     }
 
     public String executeCommand(String command) {
-
         StringBuffer output = new StringBuffer();
 
         Process p;
