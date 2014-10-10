@@ -24,9 +24,7 @@ public class PullerToolWindow {
 
     public static final String TOOL_WINDOW_ID = "Puller";
 
-    private static final ImageIcon pomodoroIcon = new ImageIcon(PullerToolWindow.class.getResource("/resources/app_download2.png"));
-
-    private final AdbCommandExecutor mCommandExecutor = new AdbCommandExecutor();
+    private static final ImageIcon pomodoroIcon = new ImageIcon(PullerToolWindow.class.getResource("/resources/app-download.gif"));
 
     public PullerToolWindow() {
         ProjectManager.getInstance().addProjectManagerListener(new ProjectManagerListener() {

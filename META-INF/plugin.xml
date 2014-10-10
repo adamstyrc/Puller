@@ -47,7 +47,7 @@
     <!-- Add your actions here -->
       <action id="com.adamstyrc.puller.DownloadAppData" class="DownloadAppDataAction" text="Puller"
               description="Downloads your app internal data (e.g. db) to your desktop"
-              icon="/resources/app_download2.png">
+              icon="/resources/app-download.gif">
           <add-to-group group-id="MainToolBar" anchor="last"/>
       </action>
   </actions>
