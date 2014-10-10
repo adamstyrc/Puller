@@ -1,22 +1,36 @@
 package com.adamstyrc.puller;
 
-import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.jetbrains.annotations.Nullable;
 
-public class PullerSettings {
+@State(name = "PullerSettings", storages = {@Storage(id = "other", file = "$APP_CONFIG$/pomodoro.settings.xml")})
+public class PullerSettings implements PersistentStateComponent<PullerSettings> {
 
     private static PullerSettings sInstance;
-    private String mDestinationDirPath;
+    public String mDestinationDirPath;
 
-    private PullerSettings(String destinationDirPath) {
-        mDestinationDirPath = destinationDirPath;
+    private PullerSettings() {
     }
 
     public static synchronized PullerSettings getInstance() {
 //        return ServiceManager.getService(PullerSettings.class);
         if (sInstance == null) {
-            sInstance = new PullerSettings("/Users/adamstyrc/Desktop/");
+            sInstance = new PullerSettings();
         }
         return sInstance;
+    }
+
+    @Override
+    public PullerSettings getState() {
+        return this;
+    }
+
+    @Override
+    public void loadState(PullerSettings pullerSettings) {
+        XmlSerializerUtil.copyBean(pullerSettings, this);
     }
 
     public String getDestinationDirPath() {

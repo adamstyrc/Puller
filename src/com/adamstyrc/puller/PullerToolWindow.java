@@ -83,7 +83,9 @@ public class PullerToolWindow {
                 updateSettings(destinationText);
             }
         });
-        pullerForm.getDestinationText().setText("/Users/adamstyrc/Desktop/");
+
+        String dirPath = PullerSettings.getInstance().getDestinationDirPath();
+        pullerForm.getDestinationText().setText(dirPath);
 
         pullerForm.getPullDataButton().addActionListener(new ActionListener() {
             @Override
@@ -123,6 +125,7 @@ public class PullerToolWindow {
     private void updateSettings(JTextField destinationText) {
         String text = destinationText.getText();
         PullerSettings.getInstance().setDestinationDirPath(text);
+        PullerSettings.getInstance().loadState(PullerSettings.getInstance());
     }
 
     public void unregisterWindowFrom(Project project) {
