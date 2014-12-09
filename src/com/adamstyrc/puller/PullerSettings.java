@@ -11,12 +11,12 @@ public class PullerSettings implements PersistentStateComponent<PullerSettings> 
 
     private static PullerSettings sInstance;
     public String mDestinationDirPath;
+    public String mAdbPath;
 
     private PullerSettings() {
     }
 
     public static synchronized PullerSettings getInstance() {
-//        return ServiceManager.getService(PullerSettings.class);
         if (sInstance == null) {
             sInstance = new PullerSettings();
         }
@@ -39,5 +39,13 @@ public class PullerSettings implements PersistentStateComponent<PullerSettings> 
 
     public void setDestinationDirPath(String destinationDirPath) {
         mDestinationDirPath = destinationDirPath;
+    }
+
+    public void setAdbPath(String adbPath) {
+        mAdbPath = adbPath;
+    }
+
+    public String getAdbPath() {
+        return mAdbPath;
     }
 }

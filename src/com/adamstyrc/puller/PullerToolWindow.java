@@ -1,9 +1,7 @@
 package com.adamstyrc.puller;
 
 import com.adamstyrc.puller.ui.PullerForm;
-import com.adamstyrc.puller.util.AdbCommandExecutor;
 import com.adamstyrc.puller.util.AppDataDownloader;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerListener;

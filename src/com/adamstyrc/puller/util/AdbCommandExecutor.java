@@ -5,6 +5,12 @@ import java.io.InputStreamReader;
 
 public class AdbCommandExecutor {
 
+    private final String mAdbPath;
+
+    public AdbCommandExecutor(String adbPath) {
+        mAdbPath = adbPath;
+    }
+
     public void pullData(String srcFilePath, String dstFilePath) {
         String command = "adb pull " + srcFilePath + " " + dstFilePath;
         executeCommand(command);
@@ -21,6 +27,7 @@ public class AdbCommandExecutor {
     }
 
     public String executeCommand(String command) {
+        command = mAdbPath + command;
         StringBuffer output = new StringBuffer();
 
         Process p;
